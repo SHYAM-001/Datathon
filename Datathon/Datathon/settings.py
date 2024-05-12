@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -34,7 +35,6 @@ INSTALLED_APPS = [
     'crimeDetection',
     'channels',
     'notification',
-    'django_celery_results',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -85,7 +85,10 @@ DATABASES = {
     }
 }
 
+DATABASES['default'] = dj_database_url.parse("postgres://siren_squad_user:Cw7BsTgh2ttMT5bQIFtqwKp8yqT6uNNN@dpg-cp0ebcvjbltc73ds346g-a.oregon-postgres.render.com/siren_squad") 
 
+
+# postgres://siren_squad_user:Cw7BsTgh2ttMT5bQIFtqwKp8yqT6uNNN@dpg-cp0ebcvjbltc73ds346g-a.oregon-postgres.render.com/siren_squad
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -130,6 +133,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'static')
 ]
+
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
