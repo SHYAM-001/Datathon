@@ -1,3 +1,5 @@
 Datathon/static/sampleData/2/Crime_group/MOTOR[[:space:]]VEHICLE[[:space:]]ACCIDENTS[[:space:]]NON-FATAL.html filter=lfs diff=lfs merge=lfs -text
 Datathon/static/sampleData/2/District/Bengaluru[[:space:]]City.html filter=lfs diff=lfs merge=lfs -text
 Datathon/crimeDetection/ML_models/Preprocessed_FIR_Data1.csv filter=lfs diff=lfs merge=lfs -text
+Datathon/static/sampleData/Crime[[:space:]]group/MOTOR[[:space:]]VEHICLE[[:space:]]ACCIDENTS[[:space:]]NON-FATAL_hotspots_map_with_marker_cluster.html filter=lfs diff=lfs merge=lfs -text
+Datathon/static/sampleData/district_hotspots_maps/Bengaluru[[:space:]]City_hotspots_map.html filter=lfs diff=lfs merge=lfs -text
