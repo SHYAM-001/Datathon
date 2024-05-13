@@ -1,0 +1,2 @@
+celery -A Datathon.celery worker --pool=solo -l info
+celery -A Datathon beat -l info

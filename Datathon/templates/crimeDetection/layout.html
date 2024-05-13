@@ -57,7 +57,14 @@
 	<!-- [ Mobile header ] start -->
 	<div class="pc-mob-header pc-header">
 		<div class="pcm-logo">
-			<img src="{% static 'images/logo.svg' %}" alt="" class="logo logo-lg">
+			<a href="{% url 'index' %}" class="b-brand"
+				style="display: flex; align-items: center; justify-content: center;">
+				<!-- ========   change your logo hear   ============ -->
+				<img src="{% static 'images/favicon.svg' %}" alt="" style="margin-top: 1rem;" class="logo logo-lg">
+				<h2 class="text-white"
+					style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-weight: lighter; margin-left: 0.5rem;margin-top:1.5rem;">
+					Siren Squad</h2>
+			</a>
 		</div>
 		<div class="pcm-toolbar">
 			<a href="#!" class="pc-head-link" id="mobile-collapse">
@@ -365,14 +372,6 @@
 							</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right pc-h-dropdown" id="notifications-dropdown">
-							<a class="dropdown-item">
-								<i class="bi bi-person-lines-fill" style="color:#778290;"></i>
-								<span>Hello</span>
-							</a>
-							<a href="{% url 'logout' %}" class="dropdown-item">
-								<i class="material-icons-two-tone">chrome_reader_mode</i>
-								<span>Logout</span>
-							</a>
 							{% for i in notifications %}
 					<li class="dropdown-item">{{i.message}}</li>
 					<hr class="dropdown-divider">
