@@ -35,6 +35,10 @@ INSTALLED_APPS = [
     'crimeDetection',
     'channels',
     'notification',
+    'django_celery_results',
+    'django_celery_beat',
+    "daphne",
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -85,7 +89,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.parse("postgres://siren_squad_user:Cw7BsTgh2ttMT5bQIFtqwKp8yqT6uNNN@dpg-cp0ebcvjbltc73ds346g-a.oregon-postgres.render.com/siren_squad") 
+# DATABASES['default'] = dj_database_url.parse("postgres://siren_squad_user:Cw7BsTgh2ttMT5bQIFtqwKp8yqT6uNNN@dpg-cp0ebcvjbltc73ds346g-a.oregon-postgres.render.com/siren_squad") 
 
 
 # postgres://siren_squad_user:Cw7BsTgh2ttMT5bQIFtqwKp8yqT6uNNN@dpg-cp0ebcvjbltc73ds346g-a.oregon-postgres.render.com/siren_squad
@@ -116,7 +120,7 @@ GOOGLE_API_KEY = 'YOUR_KEY'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -142,13 +146,18 @@ STATICFILES_DIRS=[
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# CELERY SETTINGS
 
-CELERY_BROKER_URL = 'redis://127.0.0.1.6379'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 CELERY_RESULT_BACKEND = 'django-db'
+
+# CELERY BEAT SETTINGS 
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 
 

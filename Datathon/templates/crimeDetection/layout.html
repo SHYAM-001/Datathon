@@ -358,15 +358,16 @@
 								<span class="user-desc position-relative">
 									<i class="bi bi-bell"></i>
 									<span
-										class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
+										class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle"
+										id="notification-badge">0</span>
 									<!-- Example badge with a value of 3 -->
 								</span>
 							</span>
 						</a>
-						<div class="dropdown-menu dropdown-menu-right pc-h-dropdown">
-							<a href="{% url 'profile' user.id%}" class="dropdown-item">
+						<div class="dropdown-menu dropdown-menu-right pc-h-dropdown" id="notifications-dropdown">
+							<a class="dropdown-item">
 								<i class="bi bi-person-lines-fill" style="color:#778290;"></i>
-								<span>Profile</span>
+								<span>Hello</span>
 							</a>
 							<a href="{% url 'logout' %}" class="dropdown-item">
 								<i class="material-icons-two-tone">chrome_reader_mode</i>

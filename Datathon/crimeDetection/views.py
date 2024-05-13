@@ -17,6 +17,10 @@ from .crime_forecast_prophet import *
 from .temporal_analysis_ksp import *
 from .sarima_function import *
 from .crime_correlation_final import *
+from channels.layers import get_channel_layer
+
+from django.template import RequestContext
+
 
 # Create your views here.
 def index(request):
@@ -208,9 +212,17 @@ def behavioral(request):
     return render(request,"crimeDetection/behavioral.html" ,context)
 
 
-from .tasks import test_func
+from asgiref.sync import async_to_sync
+
 def test(request):
-    test_func.delay()
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send(
+        "notification_broadcast",
+        {
+            'type':'send_notification',
+            'message':'Notification',
+        }
+    ))
     return HttpResponse("Done")
 
 
