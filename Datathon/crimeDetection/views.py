@@ -18,8 +18,9 @@ from .temporal_analysis_ksp import *
 from .sarima_function import *
 from .crime_correlation_final import *
 from channels.layers import get_channel_layer
-
+from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
+from notification.models import *
 
 
 # Create your views here.
@@ -34,6 +35,9 @@ def index(request):
     criminal_profession_count = criminal.values('crime', 'profession').annotate(count=Count('id'))
     avg_age_criminal = criminal.aggregate(avg_age_criminal=Avg('age'))
     District_count = criminal.values('crime','district').annotate(count=Count('id'))
+    
+    notifications = BroadcastNotification.objects.all()
+    count = len(notifications)
     
     df_Fir = pd.read_csv("crimeDetection\ML_models\Preprocessed_FIR_Data1.csv")   
     top_crime = Crime_correlation.objects.all()
@@ -53,8 +57,11 @@ def index(request):
         'chart1':chart1,
         'chart':chart,
         'room_name' : "broadcast",
+        'notifications':notifications,
+        'count':count,
     }
     return render(request,"crimeDetection/index.html",context)
+
 
 def district(request):
     if request.user.is_authenticated:
@@ -64,6 +71,13 @@ def district(request):
           
     district_group = ["Bagalkot","Ballari","Belagavi City","Belagavi Dist","Bengaluru City","Bengaluru Dist","Bidar","Chamarajanagar","Chickballapura","Chikkamagaluru","Chitradurga","CID","Coastal Security Police","Dakshina Kannada","Davanagere","Dharwad","Gadag","Hassan","Haveri","Hubballi Dharwad City","K.G.F","Kalaburagi"]    
     option1 = request.GET.get("district_wise_name")
+    notifications = BroadcastNotification.objects.all()
+    count = len(notifications)
+    clear = ""
+    if(notifications):
+        clear = "display"
+    else:
+        clear = "none"
     
     if(option1 != "" and option1 != None):
         print(option1)
@@ -73,15 +87,30 @@ def district(request):
               "file_name":"District",
               'district_group':district_group,
               'room_name' : "broadcast",
+              'notifications':notifications,
+              'count':count,
+              'clear':clear,
               }
         return render(request,"crimeDetection/district.html",context)
     context= {'username' : username,
               'display':"none",
               'district_group':district_group,
               'room_name' : "broadcast",
+              'notifications':notifications,
+              'count':count,
+              'clear':clear,
               }
     return render(request,"crimeDetection/district.html",context)
-    
+   
+
+def clear_notifications(request):
+    if request.method == 'POST':
+        # Delete all notifications from the database
+        BroadcastNotification.objects.all().delete()
+        return JsonResponse({'message': 'Notifications cleared successfully'})
+    else:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)   
+ 
 def crime(request):
     if request.user.is_authenticated:
         username = request.user.username
@@ -286,6 +315,7 @@ def crime_forecasting(request):
             'username':username,
             'chart':chart,
             'crimes':crime_group,
+            'room_name' : "broadcast",
         }
         return render(request,'crimeDetection/crime_forecasting.html',context)
     
@@ -312,6 +342,7 @@ def crime_forecasting(request):
             'username':username,
             'chart':chart,
             'crimes':crime_group,
+            'room_name' : "broadcast",
         }
         return render(request,'crimeDetection/crime_forecasting.html',context)
             
@@ -322,6 +353,7 @@ def crime_forecasting(request):
         'username':username,
         'chart':chart,
         'crimes':crime_group,
+        'room_name' : "broadcast",
     }
     return render(request,"crimeDetection/crime_forecasting.html" ,context )
 
@@ -347,6 +379,7 @@ def crime_correlation(request):
             'chart1':chart1,
             'chart2':chart2,
             'crimes':top_crime,
+            'room_name' : "broadcast",
         }
         return render(request,'crimeDetection/crime_correlation.html',context)
     
@@ -357,6 +390,7 @@ def crime_correlation(request):
         'chart1':chart1,
         'chart2':chart2,
         'crimes':top_crime,
+        'room_name' : "broadcast",
     }
     return render(request,"crimeDetection/crime_correlation.html" ,context )
     
@@ -376,12 +410,14 @@ def crime_group_distribution(request):
         context = {
             'username':username,
             'chart':chart,
+            'room_name' : "broadcast",
         }
         return render(request,'crimeDetection/crime_group_distribution.html',context)
     print("hi")
     context={
         'username':username,
         'chart':chart,
+        'room_name' : "broadcast",
     }
     return render(request,"crimeDetection/crime_group_distribution.html" ,context )
 
@@ -429,46 +465,56 @@ def logout_view(request):
     logout(request)
     return render(request,"crimeDetection/login.html")  
 
+@login_required(login_url='login')
 def profile(request,user_id):
-    user = get_object_or_404(User, id=user_id)
+    if user_id == request.user.id:
+        user = get_object_or_404(User, id=user_id)
     
-    # save changes
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email_id')
-        password = request.POST.get('current_password')
-        confirm_password = request.POST.get('confirm_password')
+    # save change
+        notifications = BroadcastNotification.objects.all()
+        count = len(notifications)
+        
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            email = request.POST.get('email_id')
+            password = request.POST.get('current_password')
+            confirm_password = request.POST.get('confirm_password')
 
         # Check if passwords match
-        if password != confirm_password:
-            return render(request, 'crimeDetection/profile.html', {'error_message': 'Passwords do not match'})
-
-        if(request.user.id == user_id):
+            if password != confirm_password:
+                return render(request, 'crimeDetection/profile.html', {'error_message': 'Passwords do not match'})
+            if(request.user.id == user_id):
+                
             # Update user information
-            if username:
-                user.username = username
-            else:
-                user.username = user.username
+                if username:
+                    user.username = username
+                else:
+                    user.username = user.username
             
-            if email:
-                user.email = email 
-            else:
-                user.email = user.email                 
+                if email:
+                    user.email = email 
+                else:
+                    user.email = user.email                 
            
-            if password:  # Check if a new password was provided
-                user.set_password(password)
+                if password:  # Check if a new password was provided
+                    user.set_password(password)
 
-            user.save() # Add this line to confirm if the user information was updated
-        else:
-            return render(request, 'crimeDetection/profile.html', {'error_message': 'You are not the current user'})
+                user.save() # Add this line to confirm if the user information was updated
+            else:
+                return render(request, 'crimeDetection/profile.html', {'error_message': 'You are not the current user'})
 
-        return redirect('profile', user_id=user.id)
+            return redirect('profile', user_id=user.id)
 
-    context = {
-        'username': user,
-    }
+        context = {
+            'username': user,
+            'room_name' : "broadcast",
+            "notifications":notifications,
+            "count":count,
+            }
     
-    return render(request, 'crimeDetection/profile.html', context)
+        return render(request, 'crimeDetection/profile.html', context)
+    else:
+        return redirect('profile', user_id=request.user.id)
 
 def register(request):
     

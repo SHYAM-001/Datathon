@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_9o#sil2lu6rj5@7zny3+*5%lqqfiz!9%9dxyldl_2xl&cj1^0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -91,9 +91,9 @@ DATABASES = {
 }
 
 
-db_from_env = dj_database_url.config(conn_max_age=600)
+# db_from_env = dj_database_url.config(conn_max_age=600)
 # DATABASES['default'] = dj_database_url.config(default='postgres://...')
-DATABASES['default'].update(db_from_env)
+# DATABASES['default'].update(db_from_env)
 
 # DATABASES['default'] = dj_database_url.parse("postgres://siren_squad_user:Cw7BsTgh2ttMT5bQIFtqwKp8yqT6uNNN@dpg-cp0ebcvjbltc73ds346g-a.oregon-postgres.render.com/siren_squad") 
 
@@ -139,7 +139,7 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
+# STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'static')
 ]
@@ -154,8 +154,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CELERY SETTINGS
 
-# CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-CELERY_BROKER_URL = os.environ['REDIS_URL']
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+# CELERY_BROKER_URL = os.environ['REDIS_URL']
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
@@ -168,7 +168,6 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 
 
-'''
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -177,8 +176,8 @@ CHANNEL_LAYERS = {
         },
     },
 }
-'''
 
+'''
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -187,5 +186,5 @@ CHANNEL_LAYERS = {
         },
     },
 }
-
+'''
 

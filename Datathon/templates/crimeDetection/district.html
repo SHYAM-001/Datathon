@@ -13,6 +13,8 @@ Siren Squad | Hotspot
 
 {% block body %}
 
+{% if user.is_authenticated %}
+
 <style>
   .maps {
     border-radius: 10px;
@@ -60,5 +62,14 @@ Siren Squad | Hotspot
     document.getElementById("map").style.display = "block";
   }
 </script>
+
+{% else %}
+
+<div class="text-center" style="margin-top:18%;">
+  <p>Please login to continue to work on this page</p>
+  <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+</div>
+
+{% endif %}
 
 {% endblock %}

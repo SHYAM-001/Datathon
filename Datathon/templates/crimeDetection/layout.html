@@ -40,7 +40,25 @@
 	<!-- vendor css -->
 	<link rel="stylesheet" href="{% static 'css/style.css' %}" id="main-style-link">
 
+	<style>
+		/* Define the animation */
+		@keyframes slideOut {
+			0% {
+				opacity: 1;
+				transform: translateX(0);
+			}
 
+			100% {
+				opacity: 0;
+				transform: translateX(-100%);
+			}
+		}
+
+		/* Apply the animation to the dropdown items */
+		.dropdown-item.slide-out {
+			animation: slideOut 0.5s ease-out forwards;
+		}
+	</style>
 
 
 
@@ -366,17 +384,22 @@
 									<i class="bi bi-bell"></i>
 									<span
 										class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle"
-										id="notification-badge">0</span>
+										id="notification-badge">{{count}}</span>
 									<!-- Example badge with a value of 3 -->
 								</span>
 							</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right pc-h-dropdown" id="notifications-dropdown">
 							{% for i in notifications %}
-					<li class="dropdown-item">{{i.message}}</li>
-					<hr class="dropdown-divider">
-					{% endfor %}
-					{% comment %} <li class='dropdown-item'>Hello</li>
+							<a class="dropdown-item">{{i.message}}</a>
+							<span class="dropdown-item" style="font-weight:bold;">{{i.broadcast_on}}</span>
+							<hr class="dropdown-divider">
+							{% endfor %}
+							<!-- Add this button inside the dropdown menu -->
+							<hr class="dropdown-divider">
+							<button class="btn btn-link clear-all-btn" style="display:{{clear}};">Clear All</button>
+							{% comment %}
+					<li class='dropdown-item'>Hello</li>
 					<hr class="dropdown-divider"> {% endcomment %}
 			</div>
 			</li>
@@ -401,6 +424,7 @@
 					console.log(data);
 					document.getElementById("notifications-dropdown").innerHTML = "<li class='dropdown-item'>" + data + "</li><hr class='dropdown-divider'>" + document.getElementById("notifications-dropdown").innerHTML;
 					document.getElementById("notification-badge").innerHTML = parseInt(document.getElementById("notification-badge").innerHTML) + 1;
+					document.querySelector('.clear-all-btn').style.display = "block";
 				};
 
 				notificationSocket.onclose = function (e) {
@@ -409,6 +433,54 @@
 
 
 
+
+			</script>
+
+			<script>
+				// Function to clear all notifications
+				function getCookie(name) {
+					const value = `; ${document.cookie}`;
+					const parts = value.split(`; ${name}=`);
+					if (parts.length === 2) return parts.pop().split(';').shift();
+				}
+
+				function clearAllNotifications() {
+					// Get all notification items
+					const notificationItems = document.querySelectorAll('.dropdown-item');
+
+					// Apply slide-out animation to each notification item
+					notificationItems.forEach(item => {
+						item.classList.add('slide-out');
+					});
+
+					// Delay clearing from the dropdown menu to allow the animation to finish
+					setTimeout(() => {
+						// Clear notifications from the dropdown menu
+						const notificationsDropdown = document.getElementById("notifications-dropdown");
+						notificationsDropdown.innerHTML = "";
+						document.getElementById("notification-badge").innerHTML = 0;
+
+						// Send request to delete notifications from the database
+						fetch('/clear-notifications/', {
+							method: 'POST',
+							headers: {
+								'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token is included in the request
+							}
+						})
+							.then(response => {
+								if (response.ok) {
+									console.log('All notifications cleared successfully');
+								} else {
+									console.error('Failed to clear notifications');
+								}
+							})
+							.catch(error => {
+								console.error('Error while clearing notifications:', error);
+							});
+					}, 500); // Adjust this value to match the duration of the animation
+				}
+
+				document.querySelector('.clear-all-btn').addEventListener('click', clearAllNotifications);
 
 			</script>
 
