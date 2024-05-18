@@ -145,12 +145,12 @@
 								class="pc-mtext">District-Wise crime Classification</span></a>
 					</li>
 					<li class="pc-item pc-caption">
-						<label>Behavioral</label>
+						<label>SOCIO ECONOMICS ANALYSIS</label>
 					</li>
 					<li class="pc-item">
 						<a href="{% url 'behavioral' %}" class="pc-link "><span class="pc-micon"><i class="bi bi-webcam"
-									style="color:#778290;"></i></span><span class="pc-mtext">Crime-Wise Behavioral
-								Analysis</span></a>
+									style="color:#778290;"></i></span><span class="pc-mtext">Victim & Criminal
+								Profiling</span></a>
 
 						<!--</li>
 					<li class="pc-item">
@@ -162,14 +162,7 @@
 									class="bi bi-file-excel" style="color:#778290;"></i></span><span
 								class="pc-mtext">Rowdy Sheeters</span></a>
 					</li>
-					<li class="pc-item pc-caption">
-						<label>Forecast</label>
-					</li>
-					<li class="pc-item">
-						<a href="{% url 'crime_forecasting' %}" class="pc-link "><span class="pc-micon"><i
-									class="bi bi-sign-intersection-side" style="color:#778290;"></i></span><span
-								class="pc-mtext">Crime forecasting</span></a>
-					</li>
+
 					<li class="pc-item pc-caption">
 						<label>Temporal analysis</label>
 					</li>
@@ -183,6 +176,16 @@
 									class="bi bi-sign-intersection-side" style="color:#778290;"></i></span><span
 								class="pc-mtext">Crime Group Distribution</span></a>
 					</li>
+
+					<li class="pc-item pc-caption">
+						<label>Forecast</label>
+					</li>
+					<li class="pc-item">
+						<a href="{% url 'crime_forecasting' %}" class="pc-link "><span class="pc-micon"><i
+									class="bi bi-sign-intersection-side" style="color:#778290;"></i></span><span
+								class="pc-mtext">Crime forecasting</span></a>
+					</li>
+
 					<!--<li class="pc-item pc-caption">
 						<label>Elements</label>
 						<span>UI Components</span>
@@ -391,13 +394,18 @@
 						</a>
 						<div class="dropdown-menu dropdown-menu-right pc-h-dropdown" id="notifications-dropdown">
 							{% for i in notifications %}
-							<a class="dropdown-item">{{i.message}}</a>
-							<span class="dropdown-item" style="font-weight:bold;">{{i.broadcast_on}}</span>
-							<hr class="dropdown-divider">
+							<a class="dropdown-item">{{i.message}}
+							<br>
+							<span style="color:{{color}};">{{i.level}}</span>
+							<br>
+							<span style="font-weight:bold;">{{i.broadcast_on}}</span>
+						    </a>
+							<hr class="dropdown-divider" style="color:#4682B4;height:2px;">
 							{% endfor %}
 							<!-- Add this button inside the dropdown menu -->
-							<hr class="dropdown-divider">
-							<button class="btn btn-link clear-all-btn" style="display:{{clear}};">Clear All</button>
+							<div class="text-center">
+							<button class="btn btn-primary clear-all-btn" style="display:{{clear}};">Clear All</button>
+							</div>
 							{% comment %}
 					<li class='dropdown-item'>Hello</li>
 					<hr class="dropdown-divider"> {% endcomment %}
@@ -422,9 +430,9 @@
 					const data = JSON.parse(e.data);
 					//document.querySelector('#chat-log').value += (data.message + '\n');
 					console.log(data);
-					document.getElementById("notifications-dropdown").innerHTML = "<li class='dropdown-item'>" + data + "</li><hr class='dropdown-divider'>" + document.getElementById("notifications-dropdown").innerHTML;
+					document.getElementById("notifications-dropdown").innerHTML = "<a class='dropdown-item'>" + data.message + "<br><span style='color:{{color}};'>"+data.level+"</span><br><span style='font-weight:bold;'>"+data.broadcast_on+"</span></a><hr class='dropdown-divider' style='color:#4682B4;height:2px;'>" + document.getElementById("notifications-dropdown").innerHTML;
 					document.getElementById("notification-badge").innerHTML = parseInt(document.getElementById("notification-badge").innerHTML) + 1;
-					document.querySelector('.clear-all-btn').style.display = "block";
+					document.querySelector('.clear-all-btn').style.display = 'block';
 				};
 
 				notificationSocket.onclose = function (e) {

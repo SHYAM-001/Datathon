@@ -12,6 +12,7 @@ Siren Squad | victim and criminal profiling
 {% block page_name %} victim and criminal profiling {% endblock %}
 
 {% block body %}
+
 {% if user.is_authenticated %}
 <style>
   .maps {
@@ -185,7 +186,7 @@ Siren Squad | victim and criminal profiling
       ],
   series: [
     {%  for district in District_count %}
-  { { district.count } },
+  {{ district.count }},
   {% endfor %}
       ],
   colors: ["#7267EF", "#0e9e4a", "#3ec9d6", "#ffa21d", "#EA4D4D", "#16E2C9", "#F7A648", "#6F52ED", "#36B1F0", "#FBBF24", "#2D9CDB", "#F7931E", "#0F9D58", "#E74C3C", "#3498DB", "#FF6B6B", "#833471", "#A3CB38", "#8E44AD", "#FD7272", "#5DADE2", "#F5B041", "#7D3C98", "#1ABC9C", "#F39C12", "#28B463", "#E74C3C", "#D35400", "#52BE80", "#F1C40F"],
@@ -208,6 +209,9 @@ Siren Squad | victim and criminal profiling
     }
   }]
   };
+
+  
+
 
   /*
   var optio = {
@@ -363,8 +367,8 @@ Siren Squad | victim and criminal profiling
       <div class="card maps">
         <div class="card-header">
           <h5 style="color:#5953b8;">{{crime}}</h5>
-          <span class="d-block m-t-5">Average Victim Age: <span
-              style="font-weight:bold;color:#5953b8;">{{avg_age_victim}}</span></span>
+          <span class="d-block m-t-5">Average Criminal Age: <span
+            style="font-weight:bold;color:#5953b8;">{{avg_age_criminal}}</span></span>
         </div>
         <div class="card-body">
           <div id="tree-map1"></div>
@@ -394,8 +398,8 @@ Siren Squad | victim and criminal profiling
       <div class="card maps">
         <div class="card-header">
           <h5 style="color:#5953b8;">{{crime}}</h5>
-          <span class="d-block m-t-5">Average Criminal Age: <span
-              style="font-weight:bold;color:#5953b8;">{{avg_age_criminal}}</span></span>
+          <span class="d-block m-t-5">Average Victim Age: <span
+                style="font-weight:bold;color:#5953b8;">{{avg_age_victim}}</span></span>
         </div>
         <div class="card-body">
           <div id="tree-map2"></div>
@@ -421,7 +425,6 @@ Siren Squad | victim and criminal profiling
   </div>
   <!-- [ Main Content ] end -->
 </div>
-
 
 {% else %}
 

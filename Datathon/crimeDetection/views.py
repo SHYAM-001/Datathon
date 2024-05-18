@@ -38,6 +38,11 @@ def index(request):
     
     notifications = BroadcastNotification.objects.all()
     count = len(notifications)
+    clear = ""
+    if(notifications):
+        clear = "display"
+    else:
+        clear = "none"
     
     df_Fir = pd.read_csv("crimeDetection\ML_models\Preprocessed_FIR_Data1.csv")   
     top_crime = Crime_correlation.objects.all()
@@ -90,8 +95,10 @@ def district(request):
               'notifications':notifications,
               'count':count,
               'clear':clear,
+              'color':'#FFD700'
               }
         return render(request,"crimeDetection/district.html",context)
+    
     context= {'username' : username,
               'display':"none",
               'district_group':district_group,
@@ -99,6 +106,7 @@ def district(request):
               'notifications':notifications,
               'count':count,
               'clear':clear,
+              'color':'#FFD700' 
               }
     return render(request,"crimeDetection/district.html",context)
    
@@ -117,6 +125,16 @@ def crime(request):
     else:
         username = "Quest"  
           
+ 
+    
+    notifications = BroadcastNotification.objects.all()
+    count = len(notifications)
+    clear = ""
+    if(notifications):
+        clear = "display"
+    else:
+        clear = "none"
+        
     crime_name = Crime.objects.all()
     option1 = request.GET.get("crime_wise_name")
     
@@ -129,6 +147,9 @@ def crime(request):
               'display':"block",
               "file_name":"Crime_group",
               'room_name' : "broadcast",
+              'notifications':notifications,
+              'count':count,
+              'clear':clear,
               }
         return render(request,"crimeDetection/crime.html",context)
     
@@ -136,6 +157,9 @@ def crime(request):
               "crime_name":crime_name,
               'display':"none",
               'room_name' : "broadcast",
+              'notifications':notifications,
+              'count':count,
+              'clear':clear,
               }
     return render(request,"crimeDetection/crime.html" ,context)
 
@@ -144,6 +168,14 @@ def district_crime(request):
         username = request.user.username
     else:
         username = "Quest"    
+        
+    notifications = BroadcastNotification.objects.all()
+    count = len(notifications)
+    clear = ""
+    if(notifications):
+        clear = "display"
+    else:
+        clear = "none"
         
     districts = District.objects.all()
     option1 = request.GET.get('district')
@@ -164,6 +196,9 @@ def district_crime(request):
                    'input':"block",
                    'display':"none",
                    'room_name' : "broadcast",
+                   'notifications':notifications,
+                   'count':count,
+                   'clear':clear,
                 }
         return render(request,"crimeDetection/hotspot.html" ,context)  
     
@@ -184,6 +219,9 @@ def district_crime(request):
                    'display':"block",
                    "input":"block",
                    'room_name' : "broadcast",
+                   'notifications':notifications,
+                   'count':count,
+                   'clear':clear,
                 }
         return render(request,"crimeDetection/hotspot.html",context)
     
@@ -192,6 +230,9 @@ def district_crime(request):
               'display':"none",
               "district_name":"",
               'room_name' : "broadcast",
+              'notifications':notifications,
+              'count':count,
+              'clear':clear,
               }
     return render(request,"crimeDetection/hotspot.html" ,context)    
 
@@ -199,7 +240,16 @@ def behavioral(request):
     if request.user.is_authenticated:
         username = request.user.username
     else:
-        username = "Quest"        
+        username = "Quest" 
+        
+    notifications = BroadcastNotification.objects.all()
+    count = len(notifications)
+    clear = ""
+    if(notifications):
+        clear = "display"
+    else:
+        clear = "none"    
+               
     crime = request.GET.get('crime')
     crime_group = Victim_Crime.objects.all()
     if(crime):
@@ -227,6 +277,9 @@ def behavioral(request):
         'avg_age_victim':round(avg_age_victim['avg_age_victim'],2),
         'avg_age_criminal':round(avg_age_criminal['avg_age_criminal'],2),
         'room_name' : "broadcast",
+        'notifications':notifications,
+        'count':count,
+        'clear':clear,
         }
         return render(request,"crimeDetection/behavioral.html" ,context)
         
@@ -237,6 +290,9 @@ def behavioral(request):
         'crime':crime,
         'display':"none",
         'room_name' : "broadcast",
+        'notifications':notifications,
+        'count':count,
+        'clear':clear,
     }
     return render(request,"crimeDetection/behavioral.html" ,context)
 
@@ -270,6 +326,14 @@ def rowdy_sheeters(request):
     
     category = request.GET.get('category')
     
+    notifications = BroadcastNotification.objects.all()
+    count = len(notifications)
+    clear = ""
+    if(notifications):
+        clear = "display"
+    else:
+        clear = "none"
+    
     if(category):
         rowdy = Rowdy_sheeters.objects.filter(category = category)
         rowdy_district_count = rowdy.values('category', 'district').annotate(count=Count('id'))
@@ -280,6 +344,9 @@ def rowdy_sheeters(request):
         'rowdy_district_count':rowdy_district_count,
         'avg_age_victim':round(avg_age_victim['avg_age_victim'],2),
         'room_name' : "broadcast",
+        'notifications':notifications,
+        'count':count,
+        'clear':clear,
         }
         return render(request,"crimeDetection/rowdy_sheeters.html" ,context)
         
@@ -293,6 +360,9 @@ def rowdy_sheeters(request):
         'rowdy_district_count':rowdy_district_count,
         'avg_age_victim':round(avg_age_victim['avg_age_victim'],2),
         'room_name' : "broadcast",
+        'notifications':notifications,
+        'count':count,
+        'clear':clear,
     }
     return render(request,"crimeDetection/rowdy_sheeters.html" ,context)
 
@@ -301,6 +371,14 @@ def crime_forecasting(request):
         username = request.user.username
     else:
         username = "Quest"    
+     
+    notifications = BroadcastNotification.objects.all()
+    count = len(notifications)
+    clear = ""
+    if(notifications):
+        clear = "display"
+    else:
+        clear = "none" 
         
     crime_group = Victim_Crime.objects.all()
     chart = forecast_prophet_plot(24)
@@ -316,6 +394,9 @@ def crime_forecasting(request):
             'chart':chart,
             'crimes':crime_group,
             'room_name' : "broadcast",
+            'notifications':notifications,
+            'count':count,
+            'clear':clear,
         }
         return render(request,'crimeDetection/crime_forecasting.html',context)
     
@@ -343,6 +424,9 @@ def crime_forecasting(request):
             'chart':chart,
             'crimes':crime_group,
             'room_name' : "broadcast",
+            'notifications':notifications,
+            'count':count,
+            'clear':clear,
         }
         return render(request,'crimeDetection/crime_forecasting.html',context)
             
@@ -354,6 +438,9 @@ def crime_forecasting(request):
         'chart':chart,
         'crimes':crime_group,
         'room_name' : "broadcast",
+        'notifications':notifications,
+        'count':count,
+        'clear':clear,
     }
     return render(request,"crimeDetection/crime_forecasting.html" ,context )
 
@@ -369,6 +456,14 @@ def crime_correlation(request):
     
     crime = request.GET.get("crime")
     
+    notifications = BroadcastNotification.objects.all()
+    count = len(notifications)
+    clear = ""
+    if(notifications):
+        clear = "display"
+    else:
+        clear = "none"
+    
     if(crime):
         
         chart1 = find_correlated_crimes(crime, df, top_10_crime)
@@ -380,6 +475,9 @@ def crime_correlation(request):
             'chart2':chart2,
             'crimes':top_crime,
             'room_name' : "broadcast",
+            'notifications':notifications,
+            'count':count,
+            'clear':clear,
         }
         return render(request,'crimeDetection/crime_correlation.html',context)
     
@@ -391,6 +489,9 @@ def crime_correlation(request):
         'chart2':chart2,
         'crimes':top_crime,
         'room_name' : "broadcast",
+        'notifications':notifications,
+        'count':count,
+        'clear':clear,
     }
     return render(request,"crimeDetection/crime_correlation.html" ,context )
     
@@ -400,6 +501,14 @@ def crime_group_distribution(request):
         username = request.user.username
     else:
         username = "Quest"    
+    
+    notifications = BroadcastNotification.objects.all()
+    count = len(notifications)
+    clear = ""
+    if(notifications):
+        clear = "display"
+    else:
+        clear = "none"
         
     chart = plot_crime_group_distribution(2024)
     year = request.GET.get('year')
@@ -411,6 +520,9 @@ def crime_group_distribution(request):
             'username':username,
             'chart':chart,
             'room_name' : "broadcast",
+            'notifications':notifications,
+            'count':count,
+            'clear':clear,
         }
         return render(request,'crimeDetection/crime_group_distribution.html',context)
     print("hi")
@@ -418,6 +530,9 @@ def crime_group_distribution(request):
         'username':username,
         'chart':chart,
         'room_name' : "broadcast",
+        'notifications':notifications,
+        'count':count,
+        'clear':clear,
     }
     return render(request,"crimeDetection/crime_group_distribution.html" ,context )
 

@@ -13,7 +13,7 @@ with open('crimeDetection/ML_models/prophet_model1.json', 'r') as fin:
 
 import plotly.graph_objs as go
 
-df = pd.read_csv("crimeDetection/ML_models/Preprocessed_FIR_Data1.csv")
+df = pd.read_csv("crimeDetection/ML_models/prophet_data.csv")
 
 # prompt: in the above function plot the original data points using plotly
 

@@ -7,6 +7,7 @@ import json
 class BroadcastNotification(models.Model):
     message = models.TextField()
     broadcast_on = models.DateTimeField()
+    level = models.TextField(default="Moderate")
     sent = models.BooleanField(default=False)
 
     class Meta:
