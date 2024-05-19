@@ -21,6 +21,8 @@ from channels.layers import get_channel_layer
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from notification.models import *
+from django.utils import timezone
+from datetime import date
 
 
 # Create your views here.
@@ -36,7 +38,8 @@ def index(request):
     avg_age_criminal = criminal.aggregate(avg_age_criminal=Avg('age'))
     District_count = criminal.values('crime','district').annotate(count=Count('id'))
     
-    notifications = BroadcastNotification.objects.all()
+    today = timezone.now().date()
+    notifications = BroadcastNotification.objects.filter(broadcast_on__gte=today)
     count = len(notifications)
     clear = ""
     if(notifications):
@@ -76,8 +79,16 @@ def district(request):
           
     district_group = ["Bagalkot","Ballari","Belagavi City","Belagavi Dist","Bengaluru City","Bengaluru Dist","Bidar","Chamarajanagar","Chickballapura","Chikkamagaluru","Chitradurga","CID","Coastal Security Police","Dakshina Kannada","Davanagere","Dharwad","Gadag","Hassan","Haveri","Hubballi Dharwad City","K.G.F","Kalaburagi"]    
     option1 = request.GET.get("district_wise_name")
-    notifications = BroadcastNotification.objects.all()
+    
+    today = timezone.now().date()
+    # today  = date.today()
+    notifications = BroadcastNotification.objects.filter(broadcast_on__gte=today)
+    past_notifications = BroadcastNotification.objects.filter(broadcast_on__lt=today)
+    past_notifications.delete()
+    print(notifications)
     count = len(notifications)
+    print(today)
+    
     clear = ""
     if(notifications):
         clear = "display"
