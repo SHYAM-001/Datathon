@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 
-df =pd.read_csv(r"crimeDetection\ML_models\Preprocessed_FIR_Data1.csv")
+df =pd.read_csv("crimeDetection/ML_models/Preprocessed_FIR_Data1.csv")
 df.head()
 
 df.drop(['Unnamed: 0'],axis=1,inplace=True)
@@ -53,11 +53,11 @@ df_theft.head()
 
 df_missing_person.head()
 
-df_motor_vehicle_accidents_non_fatal.to_csv('crimeDetection\ML_models\motor_vehicle.csv')
+df_motor_vehicle_accidents_non_fatal.to_csv('crimeDetection/ML_models/motor_vehicle.csv')
 
-df_missing_person.to_csv('crimeDetection\ML_models\missing_person.csv')
+df_missing_person.to_csv('crimeDetection/ML_models/missing_person.csv')
 
-df_theft.to_csv('crimeDetection\ML_models\theft.csv')
+df_theft.to_csv('crimeDetection/ML_models/theft.csv')
 
 df_theft.columns
 
@@ -98,7 +98,7 @@ fig.show()
 import pandas as pd
 import pickle
 
-with open('crimeDetection\ML_models\sarima_model_theft.pkl', 'wb') as f:
+with open('crimeDetection/ML_models/sarima_model_theft.pkl', 'wb') as f:
   pickle.dump(results, f)
 
 
@@ -125,7 +125,7 @@ def plot_sarima_forecast(model_file, data,no_of_months):
   fig.show()
 
 
-plot_sarima_forecast('crimeDetection\ML_models\sarima_model_theft.pkl', df_theft,36)
+plot_sarima_forecast('crimeDetection/ML_models/sarima_model_theft.pkl', df_theft,36)
 
 """Create model for forecasting:Missing person Crime"""
 
@@ -151,12 +151,12 @@ fig.add_trace(go.Scatter(x=pd.date_range(start=df_missing_person.index[-1], peri
 fig.update_layout(height=900, title_text="SARIMA Model for Theft Data")
 fig.show()
 
-with open('crimeDetection\ML_models\sarima_model_missing_person.pkl', 'wb') as f:
+with open('crimeDetection/ML_models/sarima_model_missing_person.pkl', 'wb') as f:
   pickle.dump(results, f)
 
 
 
-plot_sarima_forecast('crimeDetection\ML_models\sarima_model_theft.pkl', df_missing_person,12)
+plot_sarima_forecast('crimeDetection/ML_models/sarima_model_theft.pkl', df_missing_person,12)
 
 """Sarima model to forecast Motor Vechicle Accidents Non Fatal Crime"""
 
@@ -182,8 +182,8 @@ fig.add_trace(go.Scatter(x=pd.date_range(start=df_motor_vehicle_accidents_non_fa
 fig.update_layout(height=900, title_text="SARIMA Model for Theft Data")
 fig.show()
 
-with open('crimeDetection\ML_models\sarima_model_vehicle_accidents_non_fatal.pkl', 'wb') as f:
+with open('crimeDetection/ML_models/sarima_model_vehicle_accidents_non_fatal.pkl', 'wb') as f:
   pickle.dump(results, f)
 
-plot_sarima_forecast('crimeDetection\ML_models\sarima_model_vehicle_accidents_non_fatal.pkl', df_motor_vehicle_accidents_non_fatal,12)
+plot_sarima_forecast('crimeDetection/ML_models/sarima_model_vehicle_accidents_non_fatal.pkl', df_motor_vehicle_accidents_non_fatal,12)
 

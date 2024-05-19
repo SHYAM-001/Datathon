@@ -5,7 +5,7 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings('ignore')
 
-df = pd.read_csv("crimeDetection\ML_models\Preprocessed_FIR_Data1.csv")
+df = pd.read_csv("crimeDetection/ML_models/Preprocessed_FIR_Data1.csv")
 df.head()
 
 df.shape

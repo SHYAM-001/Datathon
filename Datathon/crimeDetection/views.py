@@ -47,7 +47,7 @@ def index(request):
     else:
         clear = "none"
     
-    df_Fir = pd.read_csv("crimeDetection\ML_models\Preprocessed_FIR_Data1.csv")   
+    df_Fir = pd.read_csv("crimeDetection/ML_models/Preprocessed_FIR_Data1.csv")   
     top_crime = Crime_correlation.objects.all()
     top_10_crime = ['MOTOR VEHICLE ACCIDENTS NON-FATAL', 'KARNATAKA POLICE ACT 1963', 'THEFT', 'MOTOR VEHICLE ACCIDENTS FATAL', 'MISSING PERSON', 'CASES OF HURT', 'Karnataka State Local Act', 'MOLESTATION', 'RIOTS', 'BURGLARY-NIGHT']
     crime1 = "MOTOR VEHICLE ACCIDENTS NON-FATAL"
@@ -415,18 +415,18 @@ def crime_forecasting(request):
         print(month,crime)
         if(crime == "THEFT"):
             print(crime)
-            model_file = "crimeDetection\ML_models\sarima_model_theft.pkl"
-            dataset = "crimeDetection\ML_models\\theft.csv"
+            model_file = "crimeDetection/ML_models/sarima_model_theft.pkl"
+            dataset = "crimeDetection/ML_models/theft.csv"
             no_of_months = int(month)
         elif(crime == "MISSING PERSON"):
             print(crime)
-            model_file = "crimeDetection\ML_models\sarima_model_missing_person.pkl"
-            dataset = "crimeDetection\ML_models\missing_person.csv"
+            model_file = "crimeDetection/ML_models/sarima_model_missing_person.pkl"
+            dataset = "crimeDetection/ML_models/missing_person.csv"
             no_of_months = int(month)
         elif(crime == "MOTOR VEHICLE ACCIDENTS NON-FATAL"):
             print(crime)
-            model_file = "crimeDetection\ML_models\sarima_model_vehicle_accidents_non_fatal.pkl"
-            dataset = "crimeDetection\ML_models\motor_vehicle.csv"
+            model_file = "crimeDetection/ML_models/sarima_model_vehicle_accidents_non_fatal.pkl"
+            dataset = "crimeDetection/ML_models/motor_vehicle.csv"
             no_of_months = int(month)
         
         chart = plot_sarima_forecast(model_file, dataset,no_of_months,crime)
@@ -461,7 +461,7 @@ def crime_correlation(request):
     else:
         username = "Quest" 
      
-    df_Fir = pd.read_csv("crimeDetection\ML_models\Preprocessed_FIR_Data1.csv")   
+    df_Fir = pd.read_csv("crimeDetection/ML_models/Preprocessed_FIR_Data1.csv")   
     top_crime = Crime_correlation.objects.all()
     top_10_crime = ['MOTOR VEHICLE ACCIDENTS NON-FATAL', 'KARNATAKA POLICE ACT 1963', 'THEFT', 'MOTOR VEHICLE ACCIDENTS FATAL', 'MISSING PERSON', 'CASES OF HURT', 'Karnataka State Local Act', 'MOLESTATION', 'RIOTS', 'BURGLARY-NIGHT']
     
